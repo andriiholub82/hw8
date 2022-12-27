@@ -5,15 +5,16 @@ def create_list(file):
     """Функія приймає текстовий файл, з якого сворюється список словників,
     в якому: кожен словник має ключі - це рядок з ім'ям користувача, а значення - це день народження користувача."""
     users = []
-    d = {}
+   
     with open(file, "r") as file:
         line = file.readlines()
         for item in line:
+            d = {}
             item = item.replace('\n', '').replace(' ', '')            
             d["name"] = item.split(",")[0]            
             d["birthdate"] = item.split(",")[1]
-            a = d.copy()
-            users.append(a)
+            users.append(d)
+            # users.append({"name": item.split(",")[0], "birthdate":item.split(",")[1]})
 
     return users
 
@@ -54,7 +55,6 @@ def l_day(this_year_bd, l_date):
     for k, v in this_year_bd.items():        
         date = datetime.strftime(k, "%m-%d")
         if date in l_date:
-
             print(f'{k.strftime("%A")} : {" ,".join(v)}')
         
 
@@ -68,10 +68,11 @@ def main():
     end_period = start_period + timedelta(days=7)
 
     file = "list_user.txt"
-    create_list(file)
-    sort_bd(create_list(file), current_date)
-    l_date(start_period, end_period)
-    l_day(sort_bd(create_list(file), current_date),l_date(start_period, end_period))
+    users_list = create_list(file)
+    this_year_bd = sort_bd(users_list, current_date)
+    list_date = l_date(start_period, end_period)
+    print(f'From {start_period.date()} to {end_period.date()} birthday:')
+    l_day(this_year_bd, list_date)
 
 
 if __name__ == '__main__':
